@@ -112,6 +112,27 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 ## License
 
 This project is licensed under the MIT License. View the [License](LICENSE) file in the repository for more details.
-```
+
 
 This layout presents the information in a clear and structured manner, making it easier for readers to understand the purpose of the repository and how to use its contents. Feel free to modify this further to align with your preferences or to include any additional details.
+
+## Future Plans
+
+As we continually strive to enhance and streamline the OpenAPI conversion process, we have some exciting developments on the horizon:
+
+### 1. Automating OpenAPI Spec Retrieval
+
+Our upcoming feature aims to simplify the acquisition of OpenAPI specifications. We're working on an automated mechanism to fetch specs directly from websites and API endpoints. This eliminates manual downloading, providing real-time access to the most current information.
+
+### 2. Automated Conversion and External Validation
+
+Our focus extends beyond conversion alone. We're in the process of creating an automated pipeline that not only converts OpenAPI 3.0.0 specs to 3.1.0 but also employs external tools to validate the converted files.
+
+### 3. Enhancing Quality with OpenAPI API Validator
+
+In our pursuit of accurate and compliant OpenAPI specifications, we're thrilled to integrate the OpenAPI API Validator into our conversion process. This powerful validator ensures the quality, accuracy, and compliance of your converted OpenAPI specs.
+
+By incorporating the OpenAPI API Validator, we're taking proactive steps to eliminate errors and inconsistencies from your converted specifications. This tool empowers a seamless transition from OpenAPI 3.0.0 to 3.1.0 while maintaining the highest accuracy standards.
+
+### Join Us 
+We invite you to join us on this journey towards excellence. Your feedback, ideas, and suggestions are invaluable as we enhance your OpenAPI conversion experience. Share your thoughts in the Issues section, and stay tuned for updates as we roll out these exciting features to elevate your OpenAPI conversion workflows!
