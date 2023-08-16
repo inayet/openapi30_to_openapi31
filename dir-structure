@@ -1,0 +1,14 @@
+.
+├── content.md
+├── dir-structure
+├── display_content_readme.py
+├── License
+├── openapi_converter_main.py
+├── openapi_converter.py
+├── README.md
+├── requirements.txt
+├── useful.git-commands
+├── useful.git-create-new-repo.py
+└── useful.git-create-new-repo.sh
+
+1 directory, 11 files

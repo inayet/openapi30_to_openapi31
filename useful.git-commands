@@ -1,0 +1,23 @@
+# Create a new GitHub repo
+
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/your_username/your_repo.git
+git push -u origin master
+
+# Create the main, production, and development branches
+
+git checkout -b main
+git checkout -b production
+git checkout -b development
+
+# Update all branches
+
+git fetch
+git merge main production
+git merge main development
+
+# Switch back to the development branch
+
+git checkout development
