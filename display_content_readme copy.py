@@ -50,18 +50,10 @@ async def generate_md_files(directory, ignore_patterns):
                 try:
                     async with aiofiles.open(entry.path, 'r', encoding='utf-8') as f:
                         file_content = await f.read()
-                        # 2. Check if content is already added
-                        if file_content not in added_content:
-                            # 3. Add to file_content_list and also to added_content set
-                            if entry.name not in ["content.md", "README.md"] and file_content not in toc_content:
-                                file_content_list.append(f"\n### {entry.name}\n{file_content}\n")
-                                added_content.add(file_content)  # Adding content to set
+                        if entry.name not in ["content.md", "README.md"] and file_content not in toc_content:
+                            file_content_list.append(f"\n### {entry.name}\n{file_content}\n")
                 except UnicodeDecodeError:
                     file_content_list.append(f"\n### {entry.name}\n**[ERROR reading {entry.name} as text. Might be a binary file or use a different encoding.]**\n")
-
-
-        
-
 
         new_content = toc_content + "\n###BEGIN_AUTO_GENERATED###\n" + ''.join(file_content_list) + "###END_AUTO_GENERATED###\n"
 
