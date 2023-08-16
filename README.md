@@ -43,7 +43,18 @@ Usage:
 python useful.git-create-new-repo.py
 ```
 
-### 3. `useful.git-update-production-main.py`
+### 3. `useful.git-update-development-production.py`
+
+Run this then when ready to update main branch run [useful.git-update-production-main.py](useful.git-update-production-main.py) Update your development and production branches efficiently.
+
+Usage:
+
+```bash
+python useful.git-update-development-production.py
+```
+
+
+### 4. `useful.git-update-production-main.py`
 
 Keep your production and main branches up to date with this script.
 
@@ -51,16 +62,6 @@ Usage:
 
 ```bash
 python useful.git-update-production-main.py
-```
-
-### 4. `useful.git-update-development-production.py`
-
-Update your development and production branches efficiently.
-
-Usage:
-
-```bash
-python useful.git-update-development-production.py
 ```
 
 ### 5. `md_content_aggregator.py`
