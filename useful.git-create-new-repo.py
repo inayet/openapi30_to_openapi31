@@ -2,6 +2,14 @@ import os
 import logging
 import subprocess
 
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s - %(message)s',
+                    handlers=[logging.FileHandler("script.log"), logging.StreamHandler()])
+
+
 def initialize_and_setup_repo(directory):
     
     # Set the absolute path for the directory

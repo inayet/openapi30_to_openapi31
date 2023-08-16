@@ -1,14 +1,21 @@
 .
+├── calendars.json
 ├── content.md
-├── dir-structure
+├── dir_structure
 ├── display_content_readme.py
+├── __init__.py
 ├── License
 ├── openapi_converter_main.py
 ├── openapi_converter.py
+├── __pycache__
+│   ├── content.md
+│   ├── openapi_converter.cpython-311.pyc
+│   └── README.md
 ├── README.md
 ├── requirements.txt
+├── script.log
 ├── useful.git-commands
 ├── useful.git-create-new-repo.py
 └── useful.git-create-new-repo.sh
 
-1 directory, 11 files
+2 directories, 17 files
