@@ -6,7 +6,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-DEFAULT_IGNORE_PATTERNS = [r"\./__pycache__", r".*\.git.*", r".*\.env.*"]
+DEFAULT_IGNORE_PATTERNS = [r"\./__pycache__", r".*\.git.*", r".*\.env.*", r"README\.md"]
 
 CONCURRENT_TASKS_LIMIT = 4  # Adjust this based on your system's capacity and drive type
 sem = asyncio.Semaphore(CONCURRENT_TASKS_LIMIT)
@@ -57,6 +57,8 @@ async def generate_md_files(directory, ignore_patterns):
 
         async with aiofiles.open(content_filepath, 'w') as f:
             await f.write(new_content)
+        
+        '''
 
         if os.path.exists(readme_filepath):
             async with aiofiles.open(readme_filepath, 'r') as f:
@@ -70,7 +72,7 @@ async def generate_md_files(directory, ignore_patterns):
         async with aiofiles.open(readme_filepath, 'w') as f:
             await f.write(new_content)
             await f.write("\n" + user_content)
-
+        '''
 async def process_directory(directory):
     logging.info(f"Checking directory: {directory}")
 
