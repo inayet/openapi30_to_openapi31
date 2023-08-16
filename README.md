@@ -1,51 +1,77 @@
-###BEGIN_USER_GENERATED###
+# Convert OpenAPI 3.0.0 specs to OpenAPI 3.1.0
 
-# OpenAPI converter app
+Welcome to the OpenAPI conversion toolkit! This tool is specifically designed to convert OpenAPI 3.0.0 specifications to OpenAPI 3.1.0, helping developers ensure their API documentation remains up-to-date with the latest standards.
 
-The OpenAPI converter app converts an OpenAPI 3.0 spec to 3.1.
+![OpenAPI Logo](./path_to_an_OpenAPI_logo.png) 
+> **Note**: If you have a logo or banner related to OpenAPI, you can place it here to make the README visually appealing.
 
-## Usage
+## 📌 Table of Contents
 
-To use the app, you need to provide two command-line arguments:
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact & Support](#contact--support)
 
-- The path to the input file
-- The path to the output file
+## 📥 Installation
 
-The input file must be a valid OpenAPI 3.0 spec. The output file will contain the converted OpenAPI 3.1 spec.
+To get started with the toolkit:
 
-For example, to convert the OpenAPI 3.0 spec in the file `input.yaml` to OpenAPI 3.1 and save the output to the file `output.yaml`, you would use the following command:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/inayet/openapi30_to_openapi31.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd openapi30_to_openapi31
+   ```
+3. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-#
+## 🖥️ Usage
 
+To convert an OpenAPI spec:
+
+1. Navigate to the project directory.
+2. Run the main conversion script:
+   ```bash
+   python openapi_converter_main.py <input_file> <output_file>
+   ```
+   - `<input_file>`: The path to your OpenAPI 3.0.0 specification.
+   - `<output_file>`: The desired path for your converted OpenAPI 3.1.0 specification. 
+
+**Example**:
 ```bash
-openapi_converter.py input.yaml output.yaml
+python openapi_converter_main.py example_old_spec.yml example_new_spec.yml
 ```
 
-## Output
+## 🏗 Project Structure
 
-The output file will contain the following information:
+- **OpenAPI Tools**:
+  - `openapi_converter_main.py`: The main script to initiate the conversion.
+  - `openapi_converter.py`: Contains functions to handle the conversion process.
+- **Git Automation**:
+  - `useful.git-commands`: A list of handy Git commands.
+  - `useful.git-update-remote.py`: A Python script for Git remote updates.
+  - `useful.git-create-new-repo.py`: A Python script to initialize and set up a new repo.
 
-- The OpenAPI version (3.1.0)
-- The info object, including the title, description, version, and contact information
-- The paths object, which maps paths to operations
-- The components object, which contains the schemas and security schemes
+## ✍️ Contributing
 
-## Reference guide
+Contributions are always welcome! Here's how you can help:
 
-The following is a reference guide for the API of the OpenAPI converter app:
+1. Fork the repository.
+2. Create your feature branch: `git checkout -b feature/YourNewFeature`
+3. Commit your changes: `git commit -am 'Add some feature'`
+4. Push to the branch: `git push origin feature/YourNewFeature`
+5. Submit a pull request.
 
-- `convert_openapi(openapi_dict)`: This function converts an OpenAPI 3.0 spec to 3.1. The `openapi_dict` parameter is a dictionary that contains the OpenAPI spec.
-- `validate_required_fields(openapi_dict)`: This function validates that the `openapi_dict` parameter contains all of the required fields for an OpenAPI spec.
-- `validate_openapi_version(openapi_dict, versions)`: This function validates that the `openapi_dict` parameter has the correct OpenAPI version. The `versions` parameter is a list of valid OpenAPI versions.
-- `check_incompatible_inputs(openapi_dict, incompatible_keys)`: This function checks for deprecated keys in the `openapi_dict` parameter. The `incompatible_keys` parameter is a list of deprecated keys.
+## 📜 License
 
-## Troubleshooting guide
+This project is licensed under the MIT License. See the [License](./License) file for details.
 
-If you encounter any problems using the OpenAPI converter app, you can try the following troubleshooting steps:
+## 📞 Contact & Support
 
-1. Make sure that the input file is a valid OpenAPI 3.0 spec.
-2. Make sure that the output file does not already exist.
-3. Try running the app with the `-v` flag to enable verbose logging. This will help you to diagnose the problem.
-4. If you are still having problems, you can open an issue on the GitHub repository for the app.
-
-###END_USER_GENERATED###
+For inquiries, issues, or feedback, please raise an issue in the [repository](https://github.com/inayet/openapi30_to_openapi31/issues) or contact us directly at `inayet@dreamsapi.com`.
