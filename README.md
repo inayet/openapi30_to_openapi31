@@ -18,12 +18,12 @@ This repository contains scripts and tools to convert OpenAPI 3.0.0 specificatio
 
 ### 1. openapi_converter_main.py
 
-Converts an OpenAPI 3.0 specification to 3.1.
+Converts an OpenAPI 3.0.0 specification saved in json  and outputs 3.1.0 yml spec format: 
 
 Usage:
 
 ```bash
-python openapi_converter_main.py [input_file] [output_file]
+python openapi_converter_main.py [input_file.json] [output_file.yml]
 ```
 
 ### 2. openapi_converter.py
