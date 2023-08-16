@@ -1,9 +1,9 @@
 # Convert OpenAPI 3.0.0 specs to OpenAPI 3.1.0
 
-Welcome to the OpenAPI conversion toolkit! This tool is specifically designed to convert OpenAPI 3.0.0 specifications to OpenAPI 3.1.0, helping developers ensure their API documentation remains up-to-date with the latest standards.
+Welcome to the Dreams API OpenAPI conversion toolkit! This tool is specifically designed to convert OpenAPI 3.0.0 specifications to OpenAPI 3.1.0, helping developers ensure their API documentation remains up-to-date with the latest standards. Please fork this project and make it better for yourself and everyone else
 
-![OpenAPI Logo](assets/openapi3p1.jpg) 
-> **Note**: If you have a logo or banner related to OpenAPI, you can place it here to make the README visually appealing.
+
+> **OpenAPI 3.1.0**:  <img src="assets/openapi310.png" lenght="85" alt="OpenAPI 3.1.0 Logo">
 
 ## 📌 Table of Contents
 
