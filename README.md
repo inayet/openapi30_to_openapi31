@@ -2,7 +2,7 @@
 
 Welcome to the OpenAPI conversion toolkit! This tool is specifically designed to convert OpenAPI 3.0.0 specifications to OpenAPI 3.1.0, helping developers ensure their API documentation remains up-to-date with the latest standards.
 
-![OpenAPI Logo](./path_to_an_OpenAPI_logo.png) 
+![OpenAPI Logo](assets/openapi3p1.jpg) 
 > **Note**: If you have a logo or banner related to OpenAPI, you can place it here to make the README visually appealing.
 
 ## 📌 Table of Contents
