@@ -1,4 +1,7 @@
 .
+├── assets
+│   ├── content.md
+│   └── openapi310.png
 ├── calendars.json
 ├── calendars.yml
 ├── content.md
@@ -14,6 +17,7 @@
 ├── script.log
 ├── useful.git-commands
 ├── useful.git-create-new-repo.py
-└── useful.git-update-remote.py
+├── useful.git-update-development-production.py
+└── useful.git-update-production-main.py
 
-1 directory, 16 files
+2 directories, 19 files

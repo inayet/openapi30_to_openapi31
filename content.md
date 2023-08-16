@@ -2,16 +2,17 @@
 - [script.log](#script.log)
 - [dir_structure](#dir_structure)
 - [useful.git-commands](#useful.git-commands)
-- [useful.git-update-remote.py](#useful.git-update-remote.py)
 - [display_content_readme.py](#display_content_readme.py)
 - [display_project_files.ignore](#display_project_files.ignore)
 - [requirements.txt](#requirements.txt)
 - [.gitignore](#.gitignore)
 - [__init__.py](#__init__.py)
 - [openapi_converter_main.py](#openapi_converter_main.py)
+- [useful.git-update-production-main.py](#useful.git-update-production-main.py)
 - [content.md](#content.md)
 - [openapi_converter.py](#openapi_converter.py)
 - [useful.git-create-new-repo.py](#useful.git-create-new-repo.py)
+- [useful.git-update-development-production.py](#useful.git-update-development-production.py)
 - [README.md](#README.md)
 - [License](#License)
 
@@ -24,6 +25,9 @@
 
 ### dir_structure
 .
+├── assets
+│   ├── content.md
+│   └── openapi310.png
 ├── calendars.json
 ├── calendars.yml
 ├── content.md
@@ -39,9 +43,10 @@
 ├── script.log
 ├── useful.git-commands
 ├── useful.git-create-new-repo.py
-└── useful.git-update-remote.py
+├── useful.git-update-development-production.py
+└── useful.git-update-production-main.py
 
-1 directory, 16 files
+2 directories, 19 files
 
 
 ### useful.git-commands
@@ -68,55 +73,6 @@ git merge main development
 # Switch back to the development branch
 
 git checkout development
-
-### useful.git-update-remote.py
-import subprocess
-import logging
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def check_current_branch():
-    """Check the current git branch."""
-    result = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], capture_output=True, text=True)
-    return result.stdout.strip()
-
-def switch_branch(branch_name):
-    """Switch to a specified git branch."""
-    subprocess.run(['git', 'checkout', branch_name])
-    logging.info(f"Switched to {branch_name} branch.")
-
-def add_and_commit():
-    """Add and commit changes."""
-    subprocess.run(['git', 'add', '.'])
-    commit_message = input("Enter your commit message: ")
-    subprocess.run(['git', 'commit', '-m', commit_message])
-    logging.info("Changes committed.")
-
-def push_changes(branch_name):
-    """Push changes to the specified branch."""
-    subprocess.run(['git', 'push', 'origin', branch_name])
-    logging.info(f"Pushed changes to {branch_name}.")
-
-def main():
-    if check_current_branch() != "development":
-        logging.error("Not on 'development' branch. Please switch to 'development' branch to proceed.")
-        return
-
-    # Add and commit changes on development branch
-    add_and_commit()
-    push_changes('development')
-
-    # Update production branch with changes from development
-    switch_branch('production')
-    subprocess.run(['git', 'merge', 'development'])
-    push_changes('production')
-
-    # Switch back to development branch
-    switch_branch('development')
-
-if __name__ == "__main__":
-    main()
-
 
 ### display_content_readme.py
 import os
@@ -381,6 +337,63 @@ if __name__ == '__main__':
     main()
 
 
+### useful.git-update-production-main.py
+import subprocess
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def check_current_branch():
+    """Check the current git branch."""
+    result = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], capture_output=True, text=True)
+    return result.stdout.strip()
+
+def switch_branch(branch_name):
+    """Switch to a specified git branch."""
+    subprocess.run(['git', 'checkout', branch_name])
+    logging.info(f"Switched to {branch_name} branch.")
+
+def merge_and_push(source_branch, target_branch):
+    """Merge the source branch into the target branch and push the changes."""
+    # Switch to the target branch
+    switch_branch(target_branch)
+    
+    # Merge the source branch into the target branch
+    merge_result = subprocess.run(['git', 'merge', source_branch], capture_output=True, text=True)
+    if merge_result.returncode != 0:
+        logging.error(f"Failed to merge {source_branch} into {target_branch}. Resolve conflicts manually.")
+        return
+
+    logging.info(f"Merged {source_branch} into {target_branch}.")
+    
+    # Push changes to the target branch
+    push_changes(target_branch)
+
+def push_changes(branch_name):
+    """Push changes to the specified branch."""
+    subprocess.run(['git', 'push', 'origin', branch_name])
+    logging.info(f"Pushed changes to {branch_name}.")
+
+def main():
+    initial_branch = check_current_branch()
+    if initial_branch != "main":
+        logging.warning(f"Currently on '{initial_branch}'. Switching to 'main' branch to proceed with the merge.")
+    
+    # Push updates from local 'production' branch to remote 'production' branch
+    switch_branch('production')
+    push_changes('production')
+    
+    # Merge the 'production' branch into the 'main' branch and push the changes
+    merge_and_push('production', 'main')
+    
+    # Switch back to the initial branch
+    switch_branch(initial_branch)
+    logging.info(f"Switched back to the initial branch: '{initial_branch}'")
+
+if __name__ == "__main__":
+    main()
+
+
 ### openapi_converter.py
 # Filename openapi_converter.py
 # This module contains functions to convert an OpenAPI 3.0 spec to 3.1
@@ -531,6 +544,55 @@ def initialize_and_setup_repo(directory):
 
 if __name__ == "__main__":
     initialize_and_setup_repo(".")
+
+
+### useful.git-update-development-production.py
+import subprocess
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def check_current_branch():
+    """Check the current git branch."""
+    result = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], capture_output=True, text=True)
+    return result.stdout.strip()
+
+def switch_branch(branch_name):
+    """Switch to a specified git branch."""
+    subprocess.run(['git', 'checkout', branch_name])
+    logging.info(f"Switched to {branch_name} branch.")
+
+def add_and_commit():
+    """Add and commit changes."""
+    subprocess.run(['git', 'add', '.'])
+    commit_message = input("Enter your commit message: ")
+    subprocess.run(['git', 'commit', '-m', commit_message])
+    logging.info("Changes committed.")
+
+def push_changes(branch_name):
+    """Push changes to the specified branch."""
+    subprocess.run(['git', 'push', 'origin', branch_name])
+    logging.info(f"Pushed changes to {branch_name}.")
+
+def main():
+    if check_current_branch() != "development":
+        logging.error("Not on 'development' branch. Please switch to 'development' branch to proceed.")
+        return
+
+    # Add and commit changes on development branch
+    add_and_commit()
+    push_changes('development')
+
+    # Update production branch with changes from development
+    switch_branch('production')
+    subprocess.run(['git', 'merge', 'development'])
+    push_changes('production')
+
+    # Switch back to development branch
+    switch_branch('development')
+
+if __name__ == "__main__":
+    main()
 
 
 ### License
