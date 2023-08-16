@@ -1,6 +1,5 @@
 ### README.md
 
-```markdown
 # Convert OpenAPI 3.0.0 specs to OpenAPI 3.1.0
 
 > ![OpenAPI](assets/openapi310.png)
