@@ -3,6 +3,8 @@
 ```markdown
 # Security Policy
 
+![Security](https://www.vectorlogo.zone/logos/snykio/snykio-ar21.svg)
+
 ## Supported Versions
 
 Currently, we support the following versions of "Convert OpenAPI 3.0.0 specs to OpenAPI 3.1.0" with security updates:

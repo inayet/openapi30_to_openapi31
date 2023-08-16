@@ -2,7 +2,7 @@
 
 # Convert OpenAPI 3.0.0 specs to OpenAPI 3.1.0
 
-> **OpenAPI 3.1.0**: ![OpenAPI 3.1.0 Logo](assets/openapi310.png)
+> ![OpenAPI](assets/openapi310.png)
 
 ## Table of Contents
 - [Description](#description)
@@ -14,11 +14,13 @@
 
 This repository contains scripts and tools to convert OpenAPI 3.0.0 specifications to OpenAPI 3.1.0.
 
+### How to Use
+
 #### 1. openapi_converter_main.py
 
 Converts an OpenAPI 3.0 specification to 3.1.
 
-## Usage:
+Usage:
 ```bash
 python openapi_converter_main.py [input_file] [output_file]
 ```
@@ -28,6 +30,8 @@ python openapi_converter_main.py [input_file] [output_file]
 Contains functions that assist `openapi_converter_main.py` in converting OpenAPI 3.0 to 3.1.
 
 #### 3. useful.git-create-new-repo.py
+
+![GitHub](https://www.vectorlogo.zone/logos/github/github-ar21.svg)
 
 Initializes a new GitHub repository and sets up the main, production, and development branches.
 
@@ -64,6 +68,8 @@ python display_content_readme.py
 ```
 
 ### Dependencies
+
+![Python Package](https://www.vectorlogo.zone/logos/pypi/pypi-ar21.svg)
 
 Install the required dependencies from `requirements.txt`:
 
