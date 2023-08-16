@@ -3,7 +3,6 @@ annotated-types==0.5.0
 anyio==3.7.1
 click==8.1.6
 fastapi==0.101.1
-gh==0.0.4
 gitdb==4.0.10
 GitPython==3.1.32
 h11==0.14.0
