@@ -35,13 +35,20 @@ def push_changes(branch_name):
     logging.info(f"Pushed changes to {branch_name}.")
 
 def main():
-    current_branch = check_current_branch()
-    if current_branch != "main":
-        logging.error(f"Not on 'main' branch. Currently on '{current_branch}'. Please switch to 'main' branch to proceed.")
-        return
-
+    initial_branch = check_current_branch()
+    if initial_branch != "main":
+        logging.warning(f"Currently on '{initial_branch}'. Switching to 'main' branch to proceed with the merge.")
+    
+    # Push updates from local 'production' branch to remote 'production' branch
+    switch_branch('production')
+    push_changes('production')
+    
     # Merge the 'production' branch into the 'main' branch and push the changes
     merge_and_push('production', 'main')
+    
+    # Switch back to the initial branch
+    switch_branch(initial_branch)
+    logging.info(f"Switched back to the initial branch: '{initial_branch}'")
 
 if __name__ == "__main__":
     main()
