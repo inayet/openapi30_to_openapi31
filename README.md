@@ -113,9 +113,6 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 
 This project is licensed under the MIT License. View the [License](LICENSE) file in the repository for more details.
 
-
-This layout presents the information in a clear and structured manner, making it easier for readers to understand the purpose of the repository and how to use its contents. Feel free to modify this further to align with your preferences or to include any additional details.
-
 ## Future Plans
 
 As we continually strive to enhance and streamline the OpenAPI conversion process, we have some exciting developments on the horizon:
