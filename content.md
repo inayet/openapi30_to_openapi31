@@ -2,6 +2,7 @@
 - [script.log](#script.log)
 - [dir_structure](#dir_structure)
 - [useful.git-commands](#useful.git-commands)
+- [useful.git-update-remote.py](#useful.git-update-remote.py)
 - [display_content_readme.py](#display_content_readme.py)
 - [display_project_files.ignore](#display_project_files.ignore)
 - [requirements.txt](#requirements.txt)
@@ -10,8 +11,8 @@
 - [openapi_converter_main.py](#openapi_converter_main.py)
 - [content.md](#content.md)
 - [openapi_converter.py](#openapi_converter.py)
-- [useful.git-commands-update-remote.py](#useful.git-commands-update-remote.py)
 - [useful.git-create-new-repo.py](#useful.git-create-new-repo.py)
+- [display_content_readme copy.py](#display_content_readme copy.py)
 - [README.md](#README.md)
 - [License](#License)
 
@@ -19,6 +20,7 @@
 
 ### script.log
 2023-08-16 11:05:19,178 - INFO - Directory already has a git repo
+2023-08-16 11:51:30,438 - INFO - Directory already has a git repo
 
 
 ### dir_structure
@@ -70,6 +72,55 @@ git merge main development
 
 git checkout development
 
+### useful.git-update-remote.py
+import subprocess
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+def check_current_branch():
+    """Check the current git branch."""
+    result = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], capture_output=True, text=True)
+    return result.stdout.strip()
+
+def switch_branch(branch_name):
+    """Switch to a specified git branch."""
+    subprocess.run(['git', 'checkout', branch_name])
+    logging.info(f"Switched to {branch_name} branch.")
+
+def add_and_commit():
+    """Add and commit changes."""
+    subprocess.run(['git', 'add', '.'])
+    commit_message = input("Enter your commit message: ")
+    subprocess.run(['git', 'commit', '-m', commit_message])
+    logging.info("Changes committed.")
+
+def push_changes(branch_name):
+    """Push changes to the specified branch."""
+    subprocess.run(['git', 'push', 'origin', branch_name])
+    logging.info(f"Pushed changes to {branch_name}.")
+
+def main():
+    if check_current_branch() != "development":
+        logging.error("Not on 'development' branch. Please switch to 'development' branch to proceed.")
+        return
+
+    # Add and commit changes on development branch
+    add_and_commit()
+    push_changes('development')
+
+    # Update production branch with changes from development
+    switch_branch('production')
+    subprocess.run(['git', 'merge', 'development'])
+    push_changes('production')
+
+    # Switch back to development branch
+    switch_branch('development')
+
+if __name__ == "__main__":
+    main()
+
+
 ### display_content_readme.py
 import os
 import re
@@ -79,7 +130,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-DEFAULT_IGNORE_PATTERNS = [r"\./__pycache__", r".*\.git.*", r".*\.env.*"]
+DEFAULT_IGNORE_PATTERNS = [r"\./__pycache__", r".*\.git.*", r".*\.env.*", r"README\.md"]
 
 CONCURRENT_TASKS_LIMIT = 4  # Adjust this based on your system's capacity and drive type
 sem = asyncio.Semaphore(CONCURRENT_TASKS_LIMIT)
@@ -94,6 +145,8 @@ async def should_ignore(item, compiled_patterns):
             return True
     logging.info(f"Item not ignored: {item}")
     return False
+
+added_content = set()
 
 async def generate_md_files(directory, ignore_patterns):
     logging.info(f"Processing directory: {directory}")
@@ -121,15 +174,25 @@ async def generate_md_files(directory, ignore_patterns):
                 try:
                     async with aiofiles.open(entry.path, 'r', encoding='utf-8') as f:
                         file_content = await f.read()
-                        if entry.name not in ["content.md", "README.md"] and file_content not in toc_content:
-                            file_content_list.append(f"\n### {entry.name}\n{file_content}\n")
+                        # 2. Check if content is already added
+                        if file_content not in added_content:
+                            # 3. Add to file_content_list and also to added_content set
+                            if entry.name not in ["content.md", "README.md"] and file_content not in toc_content:
+                                file_content_list.append(f"\n### {entry.name}\n{file_content}\n")
+                                added_content.add(file_content)  # Adding content to set
                 except UnicodeDecodeError:
                     file_content_list.append(f"\n### {entry.name}\n**[ERROR reading {entry.name} as text. Might be a binary file or use a different encoding.]**\n")
+
+
+        
+
 
         new_content = toc_content + "\n###BEGIN_AUTO_GENERATED###\n" + ''.join(file_content_list) + "###END_AUTO_GENERATED###\n"
 
         async with aiofiles.open(content_filepath, 'w') as f:
             await f.write(new_content)
+        
+        '''
 
         if os.path.exists(readme_filepath):
             async with aiofiles.open(readme_filepath, 'r') as f:
@@ -143,7 +206,7 @@ async def generate_md_files(directory, ignore_patterns):
         async with aiofiles.open(readme_filepath, 'w') as f:
             await f.write(new_content)
             await f.write("\n" + user_content)
-
+        '''
 async def process_directory(directory):
     logging.info(f"Checking directory: {directory}")
 
@@ -204,6 +267,7 @@ uvicorn==0.23.2
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+./__pycache__/
 *.py[cod]
 *$py.class
 
@@ -405,55 +469,6 @@ def check_incompatible_inputs(openapi_dict, incompatible_keys=['securityDefiniti
             raise Exception(f"Input contains deprecated key '{key}'.")
 
 
-### useful.git-commands-update-remote.py
-import subprocess
-import logging
-
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
-
-def check_current_branch():
-    """Check the current git branch."""
-    result = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], capture_output=True, text=True)
-    return result.stdout.strip()
-
-def switch_branch(branch_name):
-    """Switch to a specified git branch."""
-    subprocess.run(['git', 'checkout', branch_name])
-    logging.info(f"Switched to {branch_name} branch.")
-
-def add_and_commit():
-    """Add and commit changes."""
-    subprocess.run(['git', 'add', '.'])
-    commit_message = input("Enter your commit message: ")
-    subprocess.run(['git', 'commit', '-m', commit_message])
-    logging.info("Changes committed.")
-
-def push_changes(branch_name):
-    """Push changes to the specified branch."""
-    subprocess.run(['git', 'push', 'origin', branch_name])
-    logging.info(f"Pushed changes to {branch_name}.")
-
-def main():
-    if check_current_branch() != "development":
-        logging.error("Not on 'development' branch. Please switch to 'development' branch to proceed.")
-        return
-
-    # Add and commit changes on development branch
-    add_and_commit()
-    push_changes('development')
-
-    # Update production branch with changes from development
-    switch_branch('production')
-    subprocess.run(['git', 'merge', 'development'])
-    push_changes('production')
-
-    # Switch back to development branch
-    switch_branch('development')
-
-if __name__ == "__main__":
-    main()
-
-
 ### useful.git-create-new-repo.py
 import os
 import logging
@@ -519,6 +534,106 @@ def initialize_and_setup_repo(directory):
 
 if __name__ == "__main__":
     initialize_and_setup_repo(".")
+
+
+### display_content_readme copy.py
+import os
+import re
+import asyncio
+import aiofiles
+import logging
+
+logging.basicConfig(level=logging.INFO)
+
+DEFAULT_IGNORE_PATTERNS = [r"\./__pycache__", r".*\.git.*", r".*\.env.*", r"README\.md"]
+
+CONCURRENT_TASKS_LIMIT = 4  # Adjust this based on your system's capacity and drive type
+sem = asyncio.Semaphore(CONCURRENT_TASKS_LIMIT)
+
+def compile_patterns(patterns):
+    return [re.compile(pattern) for pattern in patterns]
+
+async def should_ignore(item, compiled_patterns):
+    for pattern in compiled_patterns:
+        if pattern.search(item):
+            logging.info(f"Ignoring item due to pattern {pattern.pattern}: {item}")
+            return True
+    logging.info(f"Item not ignored: {item}")
+    return False
+
+added_content = set()
+
+async def generate_md_files(directory, ignore_patterns):
+    logging.info(f"Processing directory: {directory}")
+    async with sem:
+        content_filepath = os.path.join(directory, "content.md")
+        readme_filepath = os.path.join(directory, "README.md")
+
+        user_content = ""
+        if os.path.exists(readme_filepath):
+            async with aiofiles.open(readme_filepath, 'r') as f:
+                content = await f.read()
+            user_content_match = re.search('###BEGIN_USER_GENERATED###.*###END_USER_GENERATED###', content, re.DOTALL)
+            if user_content_match:
+                user_content = user_content_match.group(0)
+
+        toc_content = "## Table of Contents\n"
+        file_content_list = []
+        toc_set = set()  # Used to ensure no duplication in TOC
+
+        for entry in os.scandir(directory):
+            if entry.is_file() and not await should_ignore(entry.path, ignore_patterns):
+                if entry.name not in toc_set:
+                    toc_content += f"- [{entry.name}](#{entry.name})\n"
+                    toc_set.add(entry.name)
+                try:
+                    async with aiofiles.open(entry.path, 'r', encoding='utf-8') as f:
+                        file_content = await f.read()
+                        if entry.name not in ["content.md", "README.md"] and file_content not in toc_content:
+                            file_content_list.append(f"\n### {entry.name}\n{file_content}\n")
+                except UnicodeDecodeError:
+                    file_content_list.append(f"\n### {entry.name}\n**[ERROR reading {entry.name} as text. Might be a binary file or use a different encoding.]**\n")
+
+        new_content = toc_content + "\n###BEGIN_AUTO_GENERATED###\n" + ''.join(file_content_list) + "###END_AUTO_GENERATED###\n"
+
+        async with aiofiles.open(content_filepath, 'w') as f:
+            await f.write(new_content)
+        
+        '''
+
+        if os.path.exists(readme_filepath):
+            async with aiofiles.open(readme_filepath, 'r') as f:
+                existing_content = await f.read()
+            content_start = existing_content.find("###BEGIN_AUTO_GENERATED###")
+            content_end = existing_content.find("###END_AUTO_GENERATED###")
+            if content_start != -1 and content_end != -1:
+                existing_content = existing_content[:content_start] + new_content + existing_content[content_end + len("###END_AUTO_GENERATED###"):]
+                new_content = existing_content
+
+        async with aiofiles.open(readme_filepath, 'w') as f:
+            await f.write(new_content)
+            await f.write("\n" + user_content)
+        '''
+async def process_directory(directory):
+    logging.info(f"Checking directory: {directory}")
+
+    ignore_file_path = os.path.join(directory, "display_project_files.ignore")
+    if os.path.exists(ignore_file_path):
+        async with aiofiles.open(ignore_file_path, 'r') as f:
+            ignore_patterns = compile_patterns([line.strip() for line in await f.readlines()])
+        logging.info(f"Loaded ignore patterns for {directory}: {ignore_patterns}")
+    else:
+        ignore_patterns = compile_patterns(DEFAULT_IGNORE_PATTERNS)
+
+    await generate_md_files(directory, ignore_patterns)
+
+    for entry in os.scandir(directory):
+        logging.info(f"Checking item against ignore patterns: {entry.path}")
+        if entry.is_dir():
+            await process_directory(entry.path)
+
+if __name__ == "__main__":
+    asyncio.run(process_directory("."))
 
 
 ### License
