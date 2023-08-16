@@ -75,8 +75,6 @@ python display_content_readme.py
 
 ## Dependencies
 
-![Python Package](https://www.vectorlogo.zone/logos/pypi/pypi-ar21.svg)
-
 Install the required dependencies from `requirements.txt`:
 
 ```bash
