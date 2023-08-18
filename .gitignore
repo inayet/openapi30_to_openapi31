@@ -1,7 +1,35 @@
 # User added
 **/.env*
+<<<<<<< HEAD
 .llm-guidance
 **/.bk*
+=======
+**/.env.*
+.llm-guidance
+**/.bk*
+=======
+**/*.db
+**/.db
+.db
+
+content-all.md
+git_actions_log.db
+
+<<<<<<< HEAD
+**/.db
+**/*.db
+=======
+**/*.db
+**/.db
+git_actions_log.db
+>>>>>>> development
+
+
+# Specific to repo structure
+script.log
+repo-structure.json
+configuration/display_project_files.ignore
+>>>>>>> development
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -31,8 +59,11 @@ wheels/
 *.egg
 
 # PyInstaller
+<<<<<<< HEAD
 #  Usually these files are written by a python script from a template
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
+=======
+>>>>>>> development
 *.manifest
 *.spec
 
@@ -70,7 +101,10 @@ db.sqlite3
 *.swp  # Vim
 *.swo  # Vim
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> development
 # Ignore .env files everywhere
 **/*.env
 
@@ -82,5 +116,10 @@ ENV/
 # Jupyter Notebook
 .ipynb_checkpoints
 
+<<<<<<< HEAD
 .git
 **/^.git
+=======
+# Correct pattern for .git directories
+**/.git/
+>>>>>>> development
