@@ -1,0 +1,34 @@
+.
+├── all-contents.md
+├── assets
+│   └── openapi310.png
+├── configuration
+│   ├── display_project_files.ignore.bk
+│   └── display_project_files.include.bk
+├── data
+│   ├── calendars.json
+│   └── calendars.yml
+├── docs
+│   ├── CODE_OF_CONDUCT.md
+│   └── SECURITY.md
+├── git-utils
+│   ├── useful.git-create-new-repo.py
+│   └── useful.git-update-all-branches.py
+├── License
+├── README.md
+├── repodir.txt
+├── requirements.txt
+├── root-content.md
+├── script.log
+├── src
+│   ├── __init__.py
+│   ├── md_content_aggregator.py
+│   ├── openapi_converter_main.py
+│   ├── openapi_converter.py
+│   └── __pycache__
+│       ├── content.md
+│       └── openapi_converter.cpython-311.pyc
+└── utilities
+    └── organize.py
+
+9 directories, 23 files

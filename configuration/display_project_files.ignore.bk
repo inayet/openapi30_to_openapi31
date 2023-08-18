@@ -1,0 +1,11 @@
+^./script.log$
+^./update.log$
+^./__pycache__
+^.*?/\.git/
+^.*?/\.git(/|$)
+^.*?/\.env
+.*\.json$
+.*\.yml$
+^./assets
+^./configuration/display_project_files.ignore$
+^./configuration/display_project_files.include$
