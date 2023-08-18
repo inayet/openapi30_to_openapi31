@@ -58,8 +58,13 @@ logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     handlers=[logging.FileHandler("script.log"), logging.StreamHandler()])
 
+
+ALLOWED_EXTENSIONS = ['*.py', '*.md']
 EXCLUDED_EXTENSIONS = ['.db', '.log', '.sh', '.pyc', 'content.md']
-EXCLUSIVE_EXTENSION = ['*.py', '*.md', 'docs/*', 'git-utils/*', 'src/*', '.']
+
+EXCLUDED_DIRECTORIES = ['.git']
+ALLOWED_DIRECTORIES = ['docs/*', 'git-utils/*', 'src/*', '.']
+
 
 added_content = set()
 
@@ -94,19 +99,17 @@ def get_repo_structure(directory):
 
 def should_include(file_path, is_dir=False):
     """
-    Determine if a file or directory should be included based on exclusive and excluded patterns.
+    Determine if a file or directory should be included based on allowed and excluded patterns.
     """
     if is_dir:
-        # Explicitly check for directories using string methods
-        dir_checks = ['docs', 'git-utils', 'src']
-        return any(check in file_path for check in dir_checks)
+        if file_path in EXCLUDED_DIRECTORIES:
+            return False
+        return any(check in file_path for check in ALLOWED_DIRECTORIES)
 
     if any(fnmatch.fnmatch(file_path, pattern) for pattern in EXCLUDED_EXTENSIONS):
         return False
 
-    return any(fnmatch.fnmatch(file_path, pattern) for pattern in EXCLUSIVE_EXTENSION)
-
-
+    return any(fnmatch.fnmatch(file_path, pattern) for pattern in ALLOWED_EXTENSIONS)
 
 def directory_structure(directory):
     """Retrieve the structure of a specific directory in JSON format."""
@@ -197,7 +200,9 @@ def combine_md_files():
 async def process_directory(directory):
     """Process a directory and its subdirectories to generate content.md files."""
     logging.info(f"Checking directory: {directory}")
-    await generate_md_files(directory)
+    if should_include(directory, is_dir=True):
+        await generate_md_files(directory)
+
 
     for entry in os.scandir(directory):
         if entry.is_dir() and should_include(entry.path, is_dir=True):

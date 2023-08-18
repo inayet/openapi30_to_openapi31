@@ -7,11 +7,13 @@
 ```json
 [
   {"type":"directory","name":"./git-utils","contents":[
+    {"type":"file","name":"git_actions_log_backup.db"},
+    {"type":"file","name":"git_actions_log.db"},
     {"type":"file","name":"useful.git-create-new-repo.py"},
     {"type":"file","name":"useful.git-update-all-branches.py"}
   ]}
 ,
-  {"type":"report","directories":1,"files":2}
+  {"type":"report","directories":1,"files":4}
 ]
 
 ```
@@ -57,31 +59,36 @@ import subprocess
 import sqlite3
 import shutil
 
-DATABASE_NAME = "git_actions_log.db"
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Absolute path to the directory the script is in
+DATABASE_NAME = os.path.join(BASE_DIR, "git_actions_log.db")
 \# Set up logging
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     handlers=[logging.FileHandler("script.log"), logging.StreamHandler()])
 
 def log_to_db(action, message):
-    with sqlite3.connect(DATABASE_NAME) as conn:
-        cursor = conn.cursor()
-        cursor.execute('''CREATE TABLE IF NOT EXISTS actions
-                          (timestamp TEXT, action TEXT, message TEXT)''')
-        cursor.execute("INSERT INTO actions (timestamp, action, message) VALUES (datetime('now'), ?, ?)",
-                       (action, message))
-        conn.commit()
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
+    cursor.execute('''CREATE TABLE IF NOT EXISTS actions  
+                      (timestamp TEXT, action TEXT, message TEXT)''')
+    cursor.execute("INSERT INTO actions (timestamp, action, message) VALUES (datetime('now'), ?, ?)",  
+                   (action, message))
+    conn.commit()
+    conn.close()
 
 def backup_database():
-    backup_name = DATABASE_NAME.split('.')[0] + "_backup.db"
+
+    if not os.path.exists(DATABASE_NAME):
+    \# If the database doesn't exist, create it by logging an entry.
+        log_to_db("INFO", "Database initialized.")
+    backup_name = os.path.join(BASE_DIR, DATABASE_NAME.split('.')[0] + "_backup.db")
     shutil.copy(DATABASE_NAME, backup_name)
     logging.info(f"Backed up database to {backup_name}.")
     log_to_db("INFO", f"Backed up database to {backup_name}.")
 
 def stash_changes():
     subprocess.run(["git", "stash", "push", "-m", "changes_stash_for_script"])
-
+    
 def pop_changes():
     stashes = subprocess.getoutput("git stash list")
     if "changes_stash_for_script" in stashes:
@@ -273,24 +280,29 @@ def handle_unstaged_changes():
 
 
 def main():
+
     logging.info("Git Branch Update Utility")
     
     fetch_all_remote_branches()
+    
     backup_database()
-    
+
     source_branch = select_source_branch()
+
     ensure_correct_branch_for_action(source_branch)
-    
+
     target_branches = select_target_branches()
+
     confirm = input(f"Will merge changes from '{source_branch}' into the following branches: {', '.join(target_branches)}\nDo you want to proceed? (yes/no): ")
-    
+
     if confirm.lower() != 'yes':
         logging.warning("Operation cancelled by user.")
         exit(1)
-    
-    update_branches(source_branch, target_branches)
-    handle_unstaged_changes()
 
+    update_branches(source_branch, target_branches)
+    
+    handle_unstaged_changes()
+    
 if __name__ == "__main__":
     main()
 ```
