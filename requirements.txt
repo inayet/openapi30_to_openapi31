@@ -4,7 +4,6 @@ anyio==3.7.1
 click==8.1.6
 fastapi==0.101.1
 gitdb==4.0.10
-GitPython==3.1.32
 h11==0.14.0
 idna==3.4
 pydantic==2.1.1
